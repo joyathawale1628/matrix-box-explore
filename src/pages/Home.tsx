@@ -12,20 +12,24 @@ const Home = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <div className="text-center text-white">
               <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                The <span className="text-yellow-300">Matrix Box</span>
-                <br />
-                Unleashing Innovation
+                The <span className="text-green-600">Matrix</span> <span className="text-white">Box</span>
               </h1>
+              <p className="text-5xl md:text-5xl font-bold mb-8 leading-tight">
+                Unleashing Innovation
+              </p>
               <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto leading-relaxed opacity-90">
                 Empowering students and educators with hands-on learning experiences through cutting-edge educational technology
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
-                  <Link to="/product">
-                    Explore The Matrix Box <ArrowRight className="ml-2 h-5 w-5" />
-                  </Link>
+                  <Link to="/product">Explore The Matrix Box</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="bg-white text-primary hover:bg-white/90 font-semibold"
+                >
                   <Link to="/why-it-matters">Learn Why It Matters</Link>
                 </Button>
               </div>
@@ -92,15 +96,19 @@ const Home = () => {
                 Meet The Matrix Box
               </h2>
               <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                The Matrix Box is more than just an educational kit—it's a gateway to endless possibilities. 
-                Packed with Arduino microcontrollers, sensors, jumper wires, and components, it provides 
+                The Matrix Box is more than just an educational kit—it's a gateway to endless possibilities.
+                Packed with Arduino microcontrollers, sensors, jumper wires, and components, it provides
                 students with everything they need to bring their ideas to life.
               </p>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                From building simple circuits to creating complex IoT projects, The Matrix Box empowers 
+                From building simple circuits to creating complex IoT projects, The Matrix Box empowers
                 learners to explore, experiment, and innovate in ways that traditional textbooks simply cannot.
               </p>
-              <Button asChild size="lg" className="gradient-primary text-white shadow-glow hover:scale-105 transition-all">
+              <Button
+                asChild
+                size="lg"
+                className="gradient-primary text-white shadow-glow hover:scale-105 transition-all"
+              >
                 <Link to="/product">
                   Discover What's Inside <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -130,9 +138,16 @@ const Home = () => {
             <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90 font-semibold">
               <Link to="/contact">Get Started Today</Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              <Link to="/why-it-matters">Learn More</Link>
-            </Button>
+            <Button
+  asChild
+  size="lg"
+  className="border-white hover:bg-white/10"
+>
+  <Link to="/why-it-matters" className="text-white">
+    Learn More
+  </Link>
+</Button>
+
           </div>
         </div>
       </section>

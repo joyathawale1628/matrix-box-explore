@@ -59,19 +59,19 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email Us",
-      details: "info@matrixtechnologies.com",
+      details: "matrixtechnologies541@gmail.com",
       description: "Send us an email anytime"
     },
     {
       icon: Phone,
       title: "Call Us",
-      details: "+1 (555) 123-4567",
-      description: "Mon-Fri, 9AM-6PM EST"
+      details: "+91 9371447027, +91 7058538816",
+      description: "Mon-Fri, 9AM-6PM "
     },
     {
       icon: MapPin,
       title: "Visit Us",
-      details: "123 Innovation Drive, Tech City, TC 12345",
+      details: "Orange City Kamptee Road Nagpur Maharashtra 441001, India",
       description: "Schedule a visit to our office"
     }
   ];
