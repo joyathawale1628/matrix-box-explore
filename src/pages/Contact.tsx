@@ -263,7 +263,7 @@ const Contact = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 gradient-primary">
+      <section className="py-20 gradient-hero">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">
             Ready to Transform Your Classroom?
