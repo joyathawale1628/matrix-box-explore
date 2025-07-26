@@ -1,7 +1,8 @@
-import { ArrowRight, Zap, Users, Award, ChevronDown } from "lucide-react";
+import { ArrowRight, Zap, Users, Award, ChevronDown, Play } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import YouTubeVideo from "@/components/YouTubeVideo";
 
 const Home = () => {
   return (
@@ -121,6 +122,41 @@ const Home = () => {
                 <p className="text-muted-foreground">Your gateway to hands-on learning</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Video Tutorials Section */}
+      <section className="py-20 bg-gradient-to-b from-accent/20 to-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Play className="h-8 w-8 text-primary" />
+              <h2 className="text-4xl md:text-5xl font-bold text-primary">
+                Video Tutorials
+              </h2>
+            </div>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Watch these comprehensive guides to get started with The Matrix Box and unlock its full potential in your learning journey.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <YouTubeVideo
+              videoId="XXXXX"
+              title="Introduction to Matrix Box"
+              className="gradient-card p-6 rounded-xl shadow-card hover:shadow-glow transition-all duration-300"
+            />
+            <YouTubeVideo
+              videoId="YYYYY"
+              title="Matrix Box Setup Guide"
+              className="gradient-card p-6 rounded-xl shadow-card hover:shadow-glow transition-all duration-300"
+            />
+            <YouTubeVideo
+              videoId="ZZZZZ"
+              title="Using Matrix Box Components"
+              className="gradient-card p-6 rounded-xl shadow-card hover:shadow-glow transition-all duration-300"
+            />
           </div>
         </div>
       </section>
