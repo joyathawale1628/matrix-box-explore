@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Search, Zap, Eye, Thermometer, Volume2, Lightbulb, Gauge } from "lucide-react";
+import { Search, Zap, Eye, Thermometer, Volume2, Lightbulb, Gauge, Filter, BookOpen, Code, Play, AlertTriangle, CheckCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import YouTubeVideo from "@/components/YouTubeVideo";
 
 const ComponentGuide = () => {
@@ -154,6 +155,15 @@ void loop() {
   const categories = ["All", "Sensor", "Output"];
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case "Beginner": return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200";
+      case "Intermediate": return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200";
+      case "Advanced": return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200";
+      default: return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200";
+    }
+  };
+
   const filteredComponents = components.filter(component => {
     const matchesSearch = component.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "All" || component.category === selectedCategory;
@@ -163,135 +173,196 @@ void loop() {
   const currentComponent = components.find(comp => comp.id === selectedComponent);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       {/* Header */}
-      <section className="py-16 bg-gradient-to-r from-background to-muted/30">
-        <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            MatrixBox Component Guide
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Learn how to use every MatrixBox component with step-by-step guides, 
-            circuit diagrams, and video tutorials. Perfect for beginners and experts alike.
+      <section className="py-20 bg-gradient-to-r from-primary/5 via-primary/10 to-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid-primary/5 [mask-image:linear-gradient(0deg,transparent,black)]"></div>
+        <div className="container mx-auto px-4 text-center relative">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <BookOpen className="h-12 w-12 text-primary" />
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+              MatrixBox Component Guide
+            </h1>
+          </div>
+          <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+            Master every MatrixBox component with comprehensive guides, interactive diagrams, and hands-on tutorials. 
+            <span className="text-primary font-semibold"> Perfect for beginners and experts alike.</span>
           </p>
+          <div className="mt-8 flex items-center justify-center gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-green-500" />
+              <span>Step-by-step guides</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Play className="h-4 w-4 text-blue-500" />
+              <span>Video tutorials</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Code className="h-4 w-4 text-purple-500" />
+              <span>Code examples</span>
+            </div>
+          </div>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-12 gap-8">
-          {/* Sidebar */}
+          {/* Enhanced Sidebar */}
           <div className="col-span-12 lg:col-span-3">
             <div className="sticky top-8 space-y-6">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Search components..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+              {/* Search with enhanced styling */}
+              <Card className="shadow-lg border-primary/10">
+                <CardContent className="p-4">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search components..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 border-primary/20 focus:border-primary/40"
+                    />
+                  </div>
+                </CardContent>
+              </Card>
 
-              {/* Category Filter */}
-              <div className="space-y-2">
-                <h3 className="font-semibold">Categories</h3>
-                <div className="flex flex-wrap gap-2">
-                  {categories.map(category => (
-                    <Badge
-                      key={category}
-                      variant={selectedCategory === category ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => setSelectedCategory(category)}
-                    >
-                      {category}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-
-              {/* Component List */}
-              <div className="space-y-2">
-                <h3 className="font-semibold">Components</h3>
-                <div className="space-y-1">
-                  {filteredComponents.map(component => {
-                    const IconComponent = component.icon;
-                    return (
-                      <button
-                        key={component.id}
-                        onClick={() => setSelectedComponent(component.id)}
-                        className={`w-full text-left p-3 rounded-md transition-colors flex items-center gap-3 ${
-                          selectedComponent === component.id
-                            ? "bg-primary text-primary-foreground"
-                            : "hover:bg-muted"
-                        }`}
+              {/* Enhanced Category Filter */}
+              <Card className="shadow-lg border-primary/10">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-base">
+                    <Filter className="h-4 w-4" />
+                    Categories
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
+                    {categories.map(category => (
+                      <Badge
+                        key={category}
+                        variant={selectedCategory === category ? "default" : "outline"}
+                        className="cursor-pointer justify-center py-2 px-3 transition-all hover:scale-105"
+                        onClick={() => setSelectedCategory(category)}
                       >
-                        <IconComponent className="h-4 w-4" />
-                        <div>
-                          <div className="font-medium">{component.name}</div>
-                          <div className="text-xs opacity-70">{component.category}</div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
+                        {category}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Enhanced Component List */}
+              <Card className="shadow-lg border-primary/10">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base">Components ({filteredComponents.length})</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-2 max-h-96 overflow-y-auto">
+                    {filteredComponents.map(component => {
+                      const IconComponent = component.icon;
+                      return (
+                        <button
+                          key={component.id}
+                          onClick={() => setSelectedComponent(component.id)}
+                          className={`w-full text-left p-4 rounded-lg transition-all duration-200 flex items-center gap-3 group ${
+                            selectedComponent === component.id
+                              ? "bg-primary text-primary-foreground shadow-md scale-[1.02]"
+                              : "hover:bg-muted/80 hover:shadow-sm border border-transparent hover:border-primary/10"
+                          }`}
+                        >
+                          <div className={`p-2 rounded-md ${
+                            selectedComponent === component.id 
+                              ? "bg-primary-foreground/20" 
+                              : "bg-primary/10 group-hover:bg-primary/20"
+                          }`}>
+                            <IconComponent className="h-4 w-4" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="font-medium">{component.name}</div>
+                            <div className="text-xs opacity-70 flex items-center gap-2 mt-1">
+                              <span>{component.category}</span>
+                              <span className={`px-2 py-0.5 rounded-full text-xs ${getDifficultyColor(component.difficulty)}`}>
+                                {component.difficulty}
+                              </span>
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
 
-          {/* Main Content */}
+          {/* Enhanced Main Content */}
           <div className="col-span-12 lg:col-span-9">
             {currentComponent && (
               <div className="space-y-8">
-                {/* Component Header */}
-                <Card>
-                  <CardHeader>
+                {/* Enhanced Component Header */}
+                <Card className="shadow-xl border-primary/20 bg-gradient-to-r from-card to-card/80">
+                  <CardHeader className="pb-6">
                     <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-3">
-                        <currentComponent.icon className="h-8 w-8 text-primary" />
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 bg-primary/10 rounded-xl">
+                          <currentComponent.icon className="h-10 w-10 text-primary" />
+                        </div>
                         <div>
-                          <CardTitle className="text-2xl">{currentComponent.name}</CardTitle>
-                          <CardDescription className="text-lg mt-1">
+                          <CardTitle className="text-3xl mb-2">{currentComponent.name}</CardTitle>
+                          <CardDescription className="text-lg leading-relaxed">
                             {currentComponent.description}
                           </CardDescription>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <Badge variant="outline" className="mb-2">
+                      <div className="text-right space-y-3">
+                        <Badge 
+                          variant="outline" 
+                          className={`${getDifficultyColor(currentComponent.difficulty)} border-0 font-semibold px-3 py-1`}
+                        >
                           {currentComponent.difficulty}
                         </Badge>
-                        <div className="text-sm text-muted-foreground">
-                          Pins: {currentComponent.connectionPins?.join(", ")}
+                        <div className="bg-muted/50 rounded-lg p-3">
+                          <div className="text-sm font-medium text-muted-foreground mb-1">Connection Pins</div>
+                          <div className="text-sm font-mono">
+                            {currentComponent.connectionPins?.join(" • ")}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </CardHeader>
                 </Card>
 
-                {/* What You Can Build */}
-                <Card>
+                {/* Enhanced What You Can Build */}
+                <Card className="shadow-lg border-primary/10">
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Zap className="h-5 w-5" />
+                    <CardTitle className="flex items-center gap-3 text-xl">
+                      <div className="p-2 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
+                        <Zap className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                      </div>
                       What You Can Build
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {currentComponent.projects.map((project, index) => (
-                        <div key={index} className="p-4 bg-muted rounded-lg border">
-                          <div className="flex justify-between items-start mb-2">
-                            <h4 className="font-semibold">{project.title}</h4>
-                            <Badge variant="secondary" className="text-xs">
-                              {project.difficulty}
-                            </Badge>
+                        <div key={index} className="group relative">
+                          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent rounded-lg transform transition-transform group-hover:scale-105"></div>
+                          <div className="relative p-6 bg-card border border-primary/10 rounded-lg shadow-sm hover:shadow-md transition-all">
+                            <div className="flex justify-between items-start mb-3">
+                              <h4 className="font-semibold text-lg text-primary">{project.title}</h4>
+                              <Badge 
+                                variant="secondary" 
+                                className={`${getDifficultyColor(project.difficulty)} border-0 text-xs`}
+                              >
+                                {project.difficulty}
+                              </Badge>
+                            </div>
+                            <p className="text-muted-foreground mb-4 leading-relaxed">
+                              {project.description}
+                            </p>
+                            <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                              <Play className="h-3 w-3 mr-2" />
+                              Try This Project
+                            </Button>
                           </div>
-                          <p className="text-sm text-muted-foreground mb-3">
-                            {project.description}
-                          </p>
-                          <Button variant="outline" size="sm">
-                            Try This Project
-                          </Button>
                         </div>
                       ))}
                     </div>
