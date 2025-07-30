@@ -16,8 +16,68 @@ const ComponentGuide = () => {
       name: "IR Sensor",
       category: "Sensor",
       icon: Eye,
-      description: "Detects obstacles using infrared light",
-      projects: ["Obstacle Avoidance Robot", "Automatic Door System"],
+      description: "Detects obstacles using infrared light. Perfect for creating smart robots and automatic systems.",
+      difficulty: "Beginner",
+      connectionPins: ["VCC", "GND", "OUT"],
+      projects: [
+        {
+          title: "Obstacle Avoidance Robot",
+          description: "Build a robot that automatically steers around obstacles",
+          difficulty: "Beginner"
+        },
+        {
+          title: "Automatic Door System", 
+          description: "Create a door that opens when someone approaches",
+          difficulty: "Intermediate"
+        }
+      ],
+      steps: [
+        {
+          title: "Preparation",
+          description: "Gather your MatrixBox board, IR sensor, and jumper wires. Ensure your workspace is clean and well-lit.",
+          tips: ["Double-check component orientation", "Keep wires organized"],
+          warning: null
+        },
+        {
+          title: "Wiring Connection",
+          description: "Connect the IR sensor to your MatrixBox board following the pin diagram.",
+          tips: ["VCC to 5V", "GND to Ground", "OUT to Digital Pin 2"],
+          warning: "Never connect VCC directly to GND - this will damage your sensor!"
+        },
+        {
+          title: "Code Upload",
+          description: "Upload the provided Arduino code to test sensor functionality.",
+          tips: ["Open Serial Monitor to see readings", "Test with different objects"],
+          warning: null
+        },
+        {
+          title: "Testing & Calibration",
+          description: "Test the sensor with various objects at different distances.",
+          tips: ["Normal detection range: 2-30cm", "Works best with solid objects"],
+          warning: "Avoid pointing directly at bright lights"
+        }
+      ],
+      codeSnippet: `// IR Sensor Basic Code
+int irPin = 2;
+int ledPin = 13;
+
+void setup() {
+  pinMode(irPin, INPUT);
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int sensorValue = digitalRead(irPin);
+  if (sensorValue == LOW) {
+    digitalWrite(ledPin, HIGH);
+    Serial.println("Obstacle detected!");
+  } else {
+    digitalWrite(ledPin, LOW);
+    Serial.println("Path clear");
+  }
+  delay(100);
+}`,
       videoId: "XXXXX"
     },
     {
@@ -25,36 +85,69 @@ const ComponentGuide = () => {
       name: "Temperature Sensor",
       category: "Sensor", 
       icon: Thermometer,
-      description: "Measures ambient temperature",
-      projects: ["Weather Station", "Smart Thermostat"],
+      description: "Measures ambient temperature accurately. Essential for weather monitoring and climate control projects.",
+      difficulty: "Beginner",
+      connectionPins: ["VCC", "GND", "DATA"],
+      projects: [
+        {
+          title: "Weather Station",
+          description: "Monitor temperature and display readings on LCD",
+          difficulty: "Intermediate"
+        },
+        {
+          title: "Smart Thermostat",
+          description: "Automatically control heating based on temperature",
+          difficulty: "Advanced"
+        }
+      ],
+      steps: [
+        {
+          title: "Component Check",
+          description: "Verify you have the DS18B20 temperature sensor and required resistor.",
+          tips: ["Check sensor model number", "4.7kΩ pull-up resistor needed"],
+          warning: null
+        },
+        {
+          title: "Wiring Setup",
+          description: "Connect sensor with pull-up resistor configuration.",
+          tips: ["Red wire to 5V", "Black wire to GND", "Yellow wire to Digital Pin 3"],
+          warning: "Always use pull-up resistor - sensor won't work without it!"
+        },
+        {
+          title: "Library Installation",
+          description: "Install OneWire and DallasTemperature libraries in Arduino IDE.",
+          tips: ["Tools → Manage Libraries", "Search for 'DallasTemperature'"],
+          warning: null
+        },
+        {
+          title: "Code and Testing",
+          description: "Upload code and monitor temperature readings in Serial Monitor.",
+          tips: ["Readings in Celsius", "Normal room temp: 20-25°C"],
+          warning: "Don't expose sensor to extreme temperatures during testing"
+        }
+      ],
+      codeSnippet: `// Temperature Sensor Code
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+#define ONE_WIRE_BUS 3
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+
+void setup() {
+  Serial.begin(9600);
+  sensors.begin();
+}
+
+void loop() {
+  sensors.requestTemperatures();
+  float temp = sensors.getTempCByIndex(0);
+  Serial.print("Temperature: ");
+  Serial.print(temp);
+  Serial.println("°C");
+  delay(1000);
+}`,
       videoId: "YYYYY"
-    },
-    {
-      id: "buzzer",
-      name: "Buzzer",
-      category: "Output",
-      icon: Volume2,
-      description: "Produces sound alerts and tones",
-      projects: ["Alarm System", "Music Box"],
-      videoId: "ZZZZZ"
-    },
-    {
-      id: "led",
-      name: "LED",
-      category: "Output",
-      icon: Lightbulb,
-      description: "Light-emitting diode for visual indicators",
-      projects: ["Traffic Light", "Status Indicator"],
-      videoId: "AAAAA"
-    },
-    {
-      id: "servo-motor",
-      name: "Servo Motor",
-      category: "Output",
-      icon: Gauge,
-      description: "Precise rotational movement control",
-      projects: ["Robotic Arm", "Automatic Gate"],
-      videoId: "BBBBB"
     }
   ];
 
@@ -153,13 +246,23 @@ const ComponentGuide = () => {
                 {/* Component Header */}
                 <Card>
                   <CardHeader>
-                    <div className="flex items-center gap-3">
-                      <currentComponent.icon className="h-8 w-8 text-primary" />
-                      <div>
-                        <CardTitle className="text-2xl">{currentComponent.name}</CardTitle>
-                        <CardDescription className="text-lg mt-1">
-                          {currentComponent.description}
-                        </CardDescription>
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        <currentComponent.icon className="h-8 w-8 text-primary" />
+                        <div>
+                          <CardTitle className="text-2xl">{currentComponent.name}</CardTitle>
+                          <CardDescription className="text-lg mt-1">
+                            {currentComponent.description}
+                          </CardDescription>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <Badge variant="outline" className="mb-2">
+                          {currentComponent.difficulty}
+                        </Badge>
+                        <div className="text-sm text-muted-foreground">
+                          Pins: {currentComponent.connectionPins?.join(", ")}
+                        </div>
                       </div>
                     </div>
                   </CardHeader>
@@ -176,13 +279,18 @@ const ComponentGuide = () => {
                   <CardContent>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {currentComponent.projects.map((project, index) => (
-                        <div key={index} className="p-4 bg-muted rounded-lg">
-                          <h4 className="font-semibold">{project}</h4>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            Learn how to build this project step by step
+                        <div key={index} className="p-4 bg-muted rounded-lg border">
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="font-semibold">{project.title}</h4>
+                            <Badge variant="secondary" className="text-xs">
+                              {project.difficulty}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground mb-3">
+                            {project.description}
                           </p>
-                          <Button variant="outline" size="sm" className="mt-2">
-                            Try This
+                          <Button variant="outline" size="sm">
+                            Try This Project
                           </Button>
                         </div>
                       ))}
@@ -196,19 +304,38 @@ const ComponentGuide = () => {
                     <CardTitle>Step-by-Step Guide</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-4">
-                      <div className="p-4 bg-muted rounded-lg">
-                        <h4 className="font-semibold text-primary mb-2">Step 1: Preparation</h4>
-                        <p>Gather your MatrixBox board and the {currentComponent.name} component. Make sure your workspace is clean and well-lit.</p>
-                      </div>
-                      <div className="p-4 bg-muted rounded-lg">
-                        <h4 className="font-semibold text-primary mb-2">Step 2: Wiring</h4>
-                        <p>Connect the {currentComponent.name} to your MatrixBox board following the circuit diagram below.</p>
-                      </div>
-                      <div className="p-4 bg-muted rounded-lg">
-                        <h4 className="font-semibold text-primary mb-2">Step 3: Programming</h4>
-                        <p>Upload the provided code to your MatrixBox and test the {currentComponent.name} functionality.</p>
-                      </div>
+                    <div className="space-y-6">
+                      {currentComponent.steps?.map((step, index) => (
+                        <div key={index} className="border rounded-lg p-4">
+                          <div className="flex items-start gap-4">
+                            <div className="bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center font-semibold text-sm">
+                              {index + 1}
+                            </div>
+                            <div className="flex-1">
+                              <h4 className="font-semibold text-lg mb-2">{step.title}</h4>
+                              <p className="text-muted-foreground mb-3">{step.description}</p>
+                              
+                              {step.tips && step.tips.length > 0 && (
+                                <div className="bg-blue-50 dark:bg-blue-950/20 p-3 rounded-md mb-3">
+                                  <h5 className="font-medium text-blue-900 dark:text-blue-100 mb-1">💡 Tips:</h5>
+                                  <ul className="text-sm text-blue-800 dark:text-blue-200 list-disc list-inside">
+                                    {step.tips.map((tip, tipIndex) => (
+                                      <li key={tipIndex}>{tip}</li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              )}
+                              
+                              {step.warning && (
+                                <div className="bg-red-50 dark:bg-red-950/20 p-3 rounded-md border border-red-200 dark:border-red-800">
+                                  <h5 className="font-medium text-red-900 dark:text-red-100 mb-1">⚠️ Warning:</h5>
+                                  <p className="text-sm text-red-800 dark:text-red-200">{step.warning}</p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -219,11 +346,32 @@ const ComponentGuide = () => {
                     <CardTitle>Circuit Diagram</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                      <div className="text-center text-muted-foreground">
-                        <Gauge className="h-12 w-12 mx-auto mb-2" />
-                        <p>Circuit diagram for {currentComponent.name}</p>
-                        <p className="text-sm">(Diagram will be added here)</p>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      {/* Circuit Diagram */}
+                      <div>
+                        <h4 className="font-semibold mb-3">Wiring Diagram</h4>
+                        <div className="aspect-square bg-muted rounded-lg flex items-center justify-center border-2 border-dashed border-muted-foreground/20">
+                          <div className="text-center text-muted-foreground">
+                            <Gauge className="h-12 w-12 mx-auto mb-2" />
+                            <p className="font-medium">{currentComponent.name} Wiring</p>
+                            <p className="text-sm">Circuit diagram will be added here</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Pin Configuration */}
+                      <div>
+                        <h4 className="font-semibold mb-3">Pin Configuration</h4>
+                        <div className="space-y-2">
+                          {currentComponent.connectionPins?.map((pin, index) => (
+                            <div key={index} className="flex justify-between items-center p-2 bg-muted rounded">
+                              <span className="font-medium">{pin}</span>
+                              <span className="text-sm text-muted-foreground">
+                                {pin === "VCC" ? "5V Power" : pin === "GND" ? "Ground" : "Signal Pin"}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </CardContent>
@@ -244,6 +392,27 @@ const ComponentGuide = () => {
                     </p>
                   </CardContent>
                 </Card>
+
+                {/* Code Example */}
+                {currentComponent.codeSnippet && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Arduino Code Example</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="bg-muted p-4 rounded-lg overflow-x-auto">
+                        <pre className="text-sm">
+                          <code>{currentComponent.codeSnippet}</code>
+                        </pre>
+                      </div>
+                      <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-md">
+                        <p className="text-sm text-blue-800 dark:text-blue-200">
+                          💡 <strong>How to use:</strong> Copy this code into your Arduino IDE, upload to your MatrixBox, and open the Serial Monitor to see the results.
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             )}
           </div>
